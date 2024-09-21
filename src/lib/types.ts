@@ -87,3 +87,9 @@ export type DownloadHistoricalDataFormData = {
   StartDate: string;
   EndDate: string;
 } & MarketConfigType;
+
+export type DateObjectType = {
+  year: number;
+  month: number;
+  day: number;
+};
