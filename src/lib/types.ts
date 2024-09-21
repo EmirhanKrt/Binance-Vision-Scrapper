@@ -77,8 +77,13 @@ type OptionMarketConfigType = {
   Data: DataEnum.BVOL_INDEX | DataEnum.EOH_SUMMARY;
 };
 
-export type MarketConfigType = { Ticker: string } & (
+type MarketConfigType =
   | SpotMarketConfigType
   | FuturesMarketConfigType
-  | OptionMarketConfigType
-);
+  | OptionMarketConfigType;
+
+export type DownloadHistoricalDataFormData = {
+  Ticker: string;
+  StartDate: string;
+  EndDate: string;
+} & MarketConfigType;
