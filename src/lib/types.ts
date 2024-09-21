@@ -1,0 +1,84 @@
+import {
+  DataEnum,
+  DataIntervalEnum,
+  FuturestEnum,
+  KLinesIntervalEnum,
+  MarketEnum
+} from "@/lib/enums";
+
+type SpotMarketConfigType = {
+  Market: MarketEnum.SPOT;
+} & (
+  | {
+      Data: DataEnum.AGG_TRADES | DataEnum.TRADES;
+      DataInterval: DataIntervalEnum;
+    }
+  | {
+      Data: DataEnum.KLINES;
+      DataInterval: DataIntervalEnum.DAILY;
+      KLinesInterval: Exclude<KLinesIntervalEnum, "3d" | "1w" | "1mo">;
+    }
+  | {
+      Data: DataEnum.KLINES;
+      DataInterval: DataIntervalEnum.MONTHLY;
+      KLinesInterval: KLinesIntervalEnum;
+    }
+);
+
+type FuturesMarketConfigType = {
+  Market: MarketEnum.FUTURES;
+  FuturesType: FuturestEnum;
+} & (
+  | ({
+      DataInterval: DataIntervalEnum.DAILY;
+    } & (
+      | {
+          Data:
+            | DataEnum.AGG_TRADES
+            | DataEnum.BOOK_DEPTH
+            | DataEnum.BOOK_TICKER
+            | DataEnum.LIQUIDATION_SNAPSHOT
+            | DataEnum.METRICS
+            | DataEnum.TRADES;
+        }
+      | {
+          Data:
+            | DataEnum.KLINES
+            | DataEnum.INDEX_PRICE_KLINES
+            | DataEnum.MARK_PRICE_KLINES
+            | DataEnum.PREMIUM_INDEX_KLINES;
+          KLinesInterval: KLinesIntervalEnum;
+        }
+    ))
+  | ({
+      DataInterval: DataIntervalEnum.MONTHLY;
+    } & (
+      | {
+          Data:
+            | DataEnum.AGG_TRADES
+            | DataEnum.BOOK_TICKER
+            | DataEnum.FUNDING_RATE
+            | DataEnum.TRADES;
+        }
+      | {
+          Data:
+            | DataEnum.KLINES
+            | DataEnum.INDEX_PRICE_KLINES
+            | DataEnum.MARK_PRICE_KLINES
+            | DataEnum.PREMIUM_INDEX_KLINES;
+          KLinesInterval: KLinesIntervalEnum;
+        }
+    ))
+);
+
+type OptionMarketConfigType = {
+  Market: MarketEnum.OPTION;
+  DataInterval: DataIntervalEnum.DAILY;
+  Data: DataEnum.BVOL_INDEX | DataEnum.EOH_SUMMARY;
+};
+
+export type MarketConfigType = { Ticker: string } & (
+  | SpotMarketConfigType
+  | FuturesMarketConfigType
+  | OptionMarketConfigType
+);
