@@ -93,3 +93,18 @@ export type DateObjectType = {
   month: number;
   day: number;
 };
+
+export type FormContextType = {
+  step: number;
+  stepHandler: (direction: "next" | "previous") => void;
+  formData: DownloadHistoricalDataFormData;
+  formDataHandler: (event: FormDataReducerActionType) => void;
+};
+
+export type FormDataReducerActionType = {
+  type: "SELECT_INPUT_CHANGE";
+  data: {
+    field: string;
+    value: string;
+  };
+};
