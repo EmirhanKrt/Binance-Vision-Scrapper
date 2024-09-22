@@ -7,3 +7,6 @@ export const DATA_SOURCE_BASE_URL = "https://data.binance.vision/data";
 export const DAY_COUNT_OF_MONTHS = [
   31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 ];
+
+export const FILE_PATH_SEPERATOR = "/";
+export const FILE_NAME_SEPERATOR = "-";
