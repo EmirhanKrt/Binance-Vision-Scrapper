@@ -5,6 +5,8 @@ import {
   generateFileBasePathObject,
   generateFilePath
 } from "@/lib/utils/file-path";
+import { extractFile, readContentOfFile } from "@/lib/utils/zip";
+import { fetchSourceFile, writeMergedFile } from "@/lib/utils/file";
 
 export async function downloadHistoricalData(
   formData: DownloadHistoricalDataFormData
@@ -17,17 +19,33 @@ export async function downloadHistoricalData(
   const { sourcePath, destinationPath, fileNamePrefix } =
     generateFileBasePathObject(formData);
 
-  const [sourceFilePathList, destinationFilePathList]: [string[], string[]] =
-    dateList.reduce(
-      ([sourceList, destinationList]: [string[], string[]], date) => [
-        [...sourceList, generateFilePath(sourcePath, fileNamePrefix, date)],
-        [
-          ...destinationList,
-          generateFilePath(destinationPath, fileNamePrefix, date)
-        ]
-      ],
-      [[], []]
+  const downloadPromises = dateList.map(async (date) => {
+    const sourceFilePath = generateFilePath(sourcePath, fileNamePrefix, date);
+    const destinationFilePath = generateFilePath(
+      destinationPath,
+      fileNamePrefix,
+      date,
+      false
     );
 
-  console.log(destinationFilePathList, sourceFilePathList);
+    const responseAsArrayBuffer = await fetchSourceFile(sourceFilePath);
+    if (!responseAsArrayBuffer) {
+      return null;
+    }
+
+    const fileContent = readContentOfFile(
+      responseAsArrayBuffer,
+      destinationFilePath
+    );
+    extractFile(responseAsArrayBuffer, destinationFilePath);
+
+    return fileContent;
+  });
+
+  const fileContentList = await Promise.all(downloadPromises);
+
+  await writeMergedFile(
+    destinationPath + "/merged.csv",
+    fileContentList.filter((file) => file !== null).join("")
+  );
 }
