@@ -12,6 +12,7 @@
   "dependencies": {
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-slot": "^1.1.0",
+    "adm-zip": "^0.5.16",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.445.0",
@@ -23,6 +24,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/adm-zip": "^0.5.5",
     "@types/jest": "^29.5.13",
     "@types/node": "^20",
     "@types/react": "^18",
