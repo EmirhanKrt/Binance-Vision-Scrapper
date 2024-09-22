@@ -6,6 +6,13 @@ import {
   FILE_PATH_SEPERATOR
 } from "@/lib/constants";
 
+/**
+ * Joins the array with given seperator.
+ *
+ * @param {string[]} pathList - The path list.
+ * @param {string} seperator - The seperator.
+ * @returns {string} Joined string.
+ */
 export function generatePath(pathList: string[], seperator: string): string {
   return pathList.join(seperator);
 }
@@ -24,41 +31,48 @@ export function generateFileBasePathObject(
 ): { sourcePath: string; destinationPath: string; fileNamePrefix: string } {
   const pathPartList = [DATA_SOURCE_BASE_URL, formData.Market];
 
-  if (formData.Market === MarketEnum.FUTURES) {
-    pathPartList.push(
-      formData.FuturesType,
-      formData.DataInterval,
-      formData.Data,
-      formData.Ticker
-    );
+  switch (formData.Market) {
+    case MarketEnum.FUTURES:
+      pathPartList.push(
+        formData.FuturesType,
+        formData.DataInterval,
+        formData.Data,
+        formData.Ticker
+      );
+      if (
+        formData.Data === DataEnum.KLINES ||
+        formData.Data === DataEnum.INDEX_PRICE_KLINES ||
+        formData.Data === DataEnum.MARK_PRICE_KLINES ||
+        formData.Data === DataEnum.PREMIUM_INDEX_KLINES
+      ) {
+        pathPartList.push(formData.KLinesInterval);
+      }
+      break;
 
-    if (
-      formData.Data === DataEnum.KLINES ||
-      formData.Data === DataEnum.INDEX_PRICE_KLINES ||
-      formData.Data === DataEnum.MARK_PRICE_KLINES ||
-      formData.Data === DataEnum.PREMIUM_INDEX_KLINES
-    ) {
-      pathPartList.push(formData.KLinesInterval);
-    }
-  } else if (formData.Market === MarketEnum.SPOT) {
-    pathPartList.push(formData.DataInterval, formData.Data, formData.Ticker);
+    case MarketEnum.SPOT:
+      pathPartList.push(formData.DataInterval, formData.Data, formData.Ticker);
+      if (formData.Data === DataEnum.KLINES) {
+        pathPartList.push(formData.KLinesInterval);
+      }
+      break;
 
-    if (formData.Data === DataEnum.KLINES) {
-      pathPartList.push(formData.KLinesInterval);
-    }
+    case MarketEnum.OPTION:
+      pathPartList.push(formData.DataInterval, formData.Data, formData.Ticker);
+      break;
   }
 
   const fileNamePrefixList = [formData.Ticker];
 
-  if (
-    formData.Data === DataEnum.KLINES ||
-    formData.Data === DataEnum.INDEX_PRICE_KLINES ||
-    formData.Data === DataEnum.MARK_PRICE_KLINES ||
-    formData.Data === DataEnum.PREMIUM_INDEX_KLINES
-  ) {
-    fileNamePrefixList.push(formData.KLinesInterval);
-  } else {
-    fileNamePrefixList.push(formData.Data);
+  switch (formData.Data) {
+    case DataEnum.KLINES:
+    case DataEnum.INDEX_PRICE_KLINES:
+    case DataEnum.MARK_PRICE_KLINES:
+    case DataEnum.PREMIUM_INDEX_KLINES:
+      fileNamePrefixList.push(formData.KLinesInterval);
+      break;
+    default:
+      fileNamePrefixList.push(formData.Data);
+      break;
   }
 
   const sourcePath = generatePath(pathPartList, FILE_PATH_SEPERATOR);
