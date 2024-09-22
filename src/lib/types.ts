@@ -104,7 +104,7 @@ export type FormContextType = {
 export type FormDataReducerActionType = {
   type: "SELECT_INPUT_CHANGE";
   data: {
-    field: string;
+    field: keyof DownloadHistoricalDataFormData;
     value: string;
   };
 };
