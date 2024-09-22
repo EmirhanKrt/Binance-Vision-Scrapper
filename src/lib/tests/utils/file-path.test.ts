@@ -7,7 +7,6 @@ import {
 import {
   DataEnum,
   DataIntervalEnum,
-  FuturestEnum,
   KLinesIntervalEnum,
   MarketEnum
 } from "@/lib/enums";
@@ -17,7 +16,7 @@ import { TestCaseFormData } from "@/lib/test-cases";
 import {
   generateFileBasePathObject,
   generatePath,
-  generateSourceFilePath
+  generateFilePath
 } from "@/lib/utils/file-path";
 
 describe("File Path Utility Functions", () => {
@@ -233,7 +232,7 @@ describe("File Path Utility Functions", () => {
     });
   });
 
-  describe("generateSourceFilePath", () => {
+  describe("generateFilePath", () => {
     it("should generate a source file path", () => {
       const testCaseList = [
         {
@@ -325,10 +324,107 @@ describe("File Path Utility Functions", () => {
 
       testCaseList.forEach((testCase) => {
         expect(
-          generateSourceFilePath(
+          generateFilePath(
             testCase.fileBasePathObject.sourcePath,
             testCase.fileBasePathObject.fileNamePrefix,
             testCase.date
+          )
+        ).toEqual(testCase.expected);
+      });
+    });
+
+    it("should generate a destination file path", () => {
+      const testCaseList = [
+        {
+          fileBasePathObject: generateFileBasePathObject(TestCaseFormData[0]),
+          date: "2024-03-01",
+          expected: "output/spot/daily/trades/BTCUSDT/BTCUSDT-trades-2024-03-01"
+        },
+        {
+          fileBasePathObject: generateFileBasePathObject(TestCaseFormData[1]),
+          date: "2024-03-01",
+
+          expected: "output/spot/daily/klines/BTCUSDT/4h/BTCUSDT-4h-2024-03-01"
+        },
+        {
+          fileBasePathObject: generateFileBasePathObject(TestCaseFormData[2]),
+          date: "2024-03",
+          expected: "output/spot/monthly/trades/BTCUSDT/BTCUSDT-trades-2024-03"
+        },
+        {
+          fileBasePathObject: generateFileBasePathObject(TestCaseFormData[3]),
+          date: "2024-03",
+          expected: "output/spot/monthly/klines/BTCUSDT/3d/BTCUSDT-3d-2024-03"
+        },
+        {
+          fileBasePathObject: generateFileBasePathObject(TestCaseFormData[4]),
+          date: "2024-03-01",
+          expected:
+            "output/futures/cm/daily/trades/BTCUSD_PERP/BTCUSD_PERP-trades-2024-03-01"
+        },
+        {
+          fileBasePathObject: generateFileBasePathObject(TestCaseFormData[5]),
+          date: "2024-03-01",
+          expected:
+            "output/futures/cm/daily/klines/BTCUSD_PERP/4h/BTCUSD_PERP-4h-2024-03-01"
+        },
+        {
+          fileBasePathObject: generateFileBasePathObject(TestCaseFormData[6]),
+          date: "2024-03",
+          expected:
+            "output/futures/cm/monthly/trades/BTCUSD_PERP/BTCUSD_PERP-trades-2024-03"
+        },
+        {
+          fileBasePathObject: generateFileBasePathObject(TestCaseFormData[7]),
+          date: "2024-03",
+          expected:
+            "output/futures/cm/monthly/klines/BTCUSD_PERP/3d/BTCUSD_PERP-3d-2024-03"
+        },
+        {
+          fileBasePathObject: generateFileBasePathObject(TestCaseFormData[8]),
+          date: "2024-03-01",
+          expected:
+            "output/futures/um/daily/trades/BTCUSDT/BTCUSDT-trades-2024-03-01"
+        },
+        {
+          fileBasePathObject: generateFileBasePathObject(TestCaseFormData[9]),
+          date: "2024-03-01",
+          expected:
+            "output/futures/um/daily/klines/BTCUSDT/4h/BTCUSDT-4h-2024-03-01"
+        },
+        {
+          fileBasePathObject: generateFileBasePathObject(TestCaseFormData[10]),
+          date: "2024-03",
+          expected:
+            "output/futures/um/monthly/trades/BTCUSDT/BTCUSDT-trades-2024-03"
+        },
+        {
+          fileBasePathObject: generateFileBasePathObject(TestCaseFormData[11]),
+          date: "2024-01",
+          expected:
+            "output/futures/um/monthly/klines/BTCUSDT/3d/BTCUSDT-3d-2024-01"
+        },
+        {
+          fileBasePathObject: generateFileBasePathObject(TestCaseFormData[12]),
+          date: "2024-03-01",
+          expected:
+            "output/option/daily/BVOLIndex/BTCBVOLUSDT/BTCBVOLUSDT-BVOLIndex-2024-03-01"
+        },
+        {
+          fileBasePathObject: generateFileBasePathObject(TestCaseFormData[13]),
+          date: "2023-10-23",
+          expected:
+            "output/option/daily/EOHSummary/BTCUSDT/BTCUSDT-EOHSummary-2023-10-23"
+        }
+      ];
+
+      testCaseList.forEach((testCase) => {
+        expect(
+          generateFilePath(
+            testCase.fileBasePathObject.destinationPath,
+            testCase.fileBasePathObject.fileNamePrefix,
+            testCase.date,
+            false
           )
         ).toEqual(testCase.expected);
       });
