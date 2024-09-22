@@ -4,7 +4,7 @@ import { generateDateList, generateDateObject } from "@/lib/utils/date";
 import {
   generateFileBasePathObject,
   generateSourceFilePath
-} from "@/lib/utils/source-file-path";
+} from "@/lib/utils/file-path";
 
 export async function downloadHistoricalData(
   formData: DownloadHistoricalDataFormData

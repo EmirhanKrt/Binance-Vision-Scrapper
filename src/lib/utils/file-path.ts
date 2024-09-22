@@ -6,7 +6,7 @@ import {
   FILE_PATH_SEPERATOR
 } from "@/lib/constants";
 
-function generatePath(pathList: string[], seperator: string): string {
+export function generatePath(pathList: string[], seperator: string): string {
   return pathList.join(seperator);
 }
 
