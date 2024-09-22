@@ -3,7 +3,7 @@ import { DownloadHistoricalDataFormData } from "@/lib/types";
 import { generateDateList, generateDateObject } from "@/lib/utils/date";
 import {
   generateFileBasePathObject,
-  generateSourceFilePath
+  generateFilePath
 } from "@/lib/utils/file-path";
 
 export async function downloadHistoricalData(
@@ -17,7 +17,17 @@ export async function downloadHistoricalData(
   const { sourcePath, destinationPath, fileNamePrefix } =
     generateFileBasePathObject(formData);
 
-  const sourceFilePathList = dateList.map((date) =>
-    generateSourceFilePath(sourcePath, fileNamePrefix, date)
-  );
+  const [sourceFilePathList, destinationFilePathList]: [string[], string[]] =
+    dateList.reduce(
+      ([sourceList, destinationList]: [string[], string[]], date) => [
+        [...sourceList, generateFilePath(sourcePath, fileNamePrefix, date)],
+        [
+          ...destinationList,
+          generateFilePath(destinationPath, fileNamePrefix, date)
+        ]
+      ],
+      [[], []]
+    );
+
+  console.log(destinationFilePathList, sourceFilePathList);
 }

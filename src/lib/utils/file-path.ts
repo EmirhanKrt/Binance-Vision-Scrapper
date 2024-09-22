@@ -91,17 +91,22 @@ export function generateFileBasePathObject(
 }
 
 /**
- * Generates the full source file path by combining the source path, file name prefix, and date.
+ * Generates the full file path by combining the base path, file name prefix, and date.
  *
- * @param {string} sourcePath - The base source path for the file.
+ * @param {string} basePath - The base path for the file.
  * @param {string} fileNamePrefix - The prefix of the file name, often based on ticker and data type.
  * @param {string} date - The date for the file, which is appended to the file name.
- * @returns {string} The full source file path, including the date and the ".zip" extension.
+ * @param {boolean} [isSource=true] - Whether the path of file is source or destination.
+ *
+ * @returns {string} The full file path.
  */
-export function generateSourceFilePath(
-  sourcePath: string,
+export function generateFilePath(
+  basePath: string,
   fileNamePrefix: string,
-  date: string
+  date: string,
+  isSource: boolean = true
 ): string {
-  return `${sourcePath}${FILE_PATH_SEPERATOR}${fileNamePrefix}${FILE_NAME_SEPERATOR}${date}.zip`;
+  return `${basePath}${FILE_PATH_SEPERATOR}${fileNamePrefix}${FILE_NAME_SEPERATOR}${date}${
+    isSource ? ".zip" : ""
+  }`;
 }
