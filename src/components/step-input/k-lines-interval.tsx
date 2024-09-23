@@ -42,7 +42,7 @@ export default memo(function KLinesInterval({
 
   useEffect(() => {
     if (previusStep.current !== undefined) {
-      if (step > previusStep.current && !isKLineInputNeeded) {
+      if (step > previusStep.current && !isKLineInputNeeded && step < 5) {
         stepHandler("next");
       } else if (step < previusStep.current && !isKLineInputNeeded) {
         stepHandler("previous");

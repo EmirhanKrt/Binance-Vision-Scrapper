@@ -25,7 +25,7 @@ import {
   CommandItem,
   CommandList
 } from "@/components/ui/command";
-import { TypographyP } from "./typography-p";
+import { TypographyP } from "@/components/ui/typography-p";
 
 export default function ComboBox({
   id,
@@ -87,7 +87,7 @@ export default function ComboBox({
             <TypographyP>
               {currentComboBoxValue ? currentComboBoxValue.label : "Select..."}
             </TypographyP>
-            <ChevronsUpDown />
+            <ChevronsUpDown className="h-4 w-4" />
 
             <input
               readOnly
@@ -95,7 +95,6 @@ export default function ComboBox({
               id={id}
               name={name}
               value={value || ""}
-              disabled={disabled}
               className="hidden"
             />
           </div>

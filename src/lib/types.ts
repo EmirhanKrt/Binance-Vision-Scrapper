@@ -118,6 +118,12 @@ export type KLinesIntervalListContextType = {
   kLinesIntervalListHandler: (signal: AbortSignal) => void;
 };
 
+export type DateRangeContextType = {
+  loading: boolean;
+
+  dateRangeHandler: (signal: AbortSignal) => void;
+};
+
 export type FormDataReducerActionType = {
   type: "SELECT_INPUT_CHANGE";
   data: {

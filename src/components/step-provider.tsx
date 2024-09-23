@@ -15,7 +15,7 @@ export default function StepProvider({
     function (direction: "next" | "previous") {
       switch (direction) {
         case "next":
-          if (step < 5) setStep(step + 1);
+          if (step < 6) setStep(step + 1);
           break;
 
         case "previous":

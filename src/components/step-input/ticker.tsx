@@ -1,17 +1,18 @@
 "use client";
 
-import { memo, useContext, useEffect, useMemo } from "react";
+import { memo, useEffect, useMemo } from "react";
+
+import useAvailableTickerList from "@/hooks/use-available-ticker-list";
 
 import { TypographyP } from "@/components/ui/typography-p";
 import ComboBox from "@/components/ui/combo-box";
-import TickerListContext from "@/contexts/ticker-list";
 
 export default memo(function Ticker({
   disabled = true
 }: {
   disabled: boolean;
 }) {
-  const { loading, tickerList, tickerHandler } = useContext(TickerListContext);
+  const { loading, tickerList, tickerHandler } = useAvailableTickerList();
 
   useEffect(() => {
     const controller = new AbortController();

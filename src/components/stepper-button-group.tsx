@@ -16,17 +16,20 @@ export default function StepperButtonGroup() {
   const isLoading = isTickerListLoading || isKlinesIntervalListLoading;
 
   return (
-    <div className="flex justify-between mt-auto">
+    <div className="flex justify-between">
       <Button
         variant={"secondary"}
         onClick={() => stepHandler("previous")}
-        disabled={step === 0 || isLoading}
+        disabled={step === 0 || step === 6 || isLoading}
         className={"disabled:cursor-not-allowed"}
       >
         Previous
       </Button>
-      <Button onClick={() => stepHandler("next")} disabled={isLoading}>
-        {step === 5 ? "Start Fetching" : "Next"}
+      <Button
+        onClick={() => stepHandler("next")}
+        disabled={step === 6 || isLoading}
+      >
+        {step === 5 ? "Start Scrapping" : step === 6 ? "Scrapping..." : "Next"}
       </Button>
     </div>
   );
