@@ -1,5 +1,3 @@
-"use client";
-
 import { memo, useEffect } from "react";
 
 import DateRangePicker from "@/components/ui/date-range-picker";

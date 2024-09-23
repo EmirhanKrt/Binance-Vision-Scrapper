@@ -1,5 +1,3 @@
-"use client";
-
 import { memo, useEffect, useRef } from "react";
 
 import { DataEnum, KLinesIntervalEnum } from "@/lib/enums";

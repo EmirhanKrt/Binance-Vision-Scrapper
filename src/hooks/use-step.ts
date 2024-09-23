@@ -2,8 +2,6 @@ import { useContext } from "react";
 
 import StepContext from "@/contexts/step";
 
-function useStep() {
+export default function useStep() {
   return useContext(StepContext);
 }
-
-export default useStep;

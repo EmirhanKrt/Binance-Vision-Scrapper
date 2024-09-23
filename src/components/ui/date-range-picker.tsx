@@ -109,7 +109,7 @@ export default function DateRangePicker({
 
             <input
               readOnly
-              type="date"
+              type="string"
               id={startDate.id}
               name={startDate.name}
               value={startDateValue || ""}
@@ -117,7 +117,7 @@ export default function DateRangePicker({
             />
             <input
               readOnly
-              type="date"
+              type="string"
               id={endDate.id}
               name={endDate.name}
               value={endDateValue || ""}

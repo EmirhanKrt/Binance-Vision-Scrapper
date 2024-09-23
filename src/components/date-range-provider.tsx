@@ -45,7 +45,13 @@ export default function DateRangeProvider({
 
     searchValueParts.push("");
 
-    const fileNameSearchValueParts = [FormData.Ticker, FormData.Data, ""];
+    const fileNameSearchValueParts = [FormData.Ticker];
+
+    if (isKLineInputNeeded)
+      fileNameSearchValueParts.push(FormData.KLinesInterval);
+    else fileNameSearchValueParts.push(FormData.Data);
+
+    fileNameSearchValueParts.push("");
 
     return content
       .replace(

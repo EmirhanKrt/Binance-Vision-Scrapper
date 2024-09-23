@@ -1,3 +1,5 @@
+"use server";
+
 import { DownloadHistoricalDataFormData } from "@/lib/types";
 
 import { generateDateList, generateDateObject } from "@/lib/utils/date";
@@ -8,16 +10,22 @@ import {
 import { extractFile, readContentOfFile } from "@/lib/utils/zip";
 import { fetchSourceFile, writeMergedFile } from "@/lib/utils/file";
 
-export async function downloadHistoricalData(
-  formData: DownloadHistoricalDataFormData
-) {
-  const startDate = generateDateObject(new Date(formData.StartDate));
-  const endDate = generateDateObject(new Date(formData.EndDate));
+export async function downloadHistoricalData(formData: FormData) {
+  const formDataConverted = Object.fromEntries(
+    formData
+  ) as DownloadHistoricalDataFormData;
 
-  const dateList = generateDateList(formData.DataInterval, startDate, endDate);
+  const startDate = generateDateObject(new Date(formDataConverted.StartDate));
+  const endDate = generateDateObject(new Date(formDataConverted.EndDate));
+
+  const dateList = generateDateList(
+    formDataConverted.DataInterval,
+    startDate,
+    endDate
+  );
 
   const { sourcePath, destinationPath, fileNamePrefix } =
-    generateFileBasePathObject(formData);
+    generateFileBasePathObject(formDataConverted);
 
   const downloadPromises = dateList.map(async (date) => {
     const sourceFilePath = generateFilePath(sourcePath, fileNamePrefix, date);
@@ -48,4 +56,6 @@ export async function downloadHistoricalData(
     destinationPath + "/merged.csv",
     fileContentList.filter((file) => file !== null).join("")
   );
+
+  return JSON.parse(JSON.stringify({ success: true }));
 }

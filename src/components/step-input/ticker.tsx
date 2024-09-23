@@ -1,5 +1,3 @@
-"use client";
-
 import { memo, useEffect, useMemo } from "react";
 
 import useAvailableTickerList from "@/hooks/use-available-ticker-list";

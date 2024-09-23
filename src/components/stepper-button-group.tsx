@@ -5,6 +5,7 @@ import useAvailableTickerList from "@/hooks/use-available-ticker-list";
 
 import { Button } from "@/components/ui/button";
 import useAvailableKlinesIntervalList from "@/hooks/use-available-k-lines-interval-list";
+import useAvailableDateRange from "@/hooks/use-available-date-range";
 
 export default function StepperButtonGroup() {
   const { step, stepHandler } = useStep();
@@ -12,25 +13,35 @@ export default function StepperButtonGroup() {
   const { loading: isTickerListLoading } = useAvailableTickerList();
   const { loading: isKlinesIntervalListLoading } =
     useAvailableKlinesIntervalList();
+  const { loading: isDateRangeLoading } = useAvailableDateRange();
 
-  const isLoading = isTickerListLoading || isKlinesIntervalListLoading;
+  const isLoading =
+    isTickerListLoading || isKlinesIntervalListLoading || isDateRangeLoading;
 
   return (
     <div className="flex justify-between">
       <Button
         variant={"secondary"}
         onClick={() => stepHandler("previous")}
-        disabled={step === 0 || step === 6 || isLoading}
+        disabled={step === 0 || isLoading}
         className={"disabled:cursor-not-allowed"}
+        type="button"
       >
         Previous
       </Button>
-      <Button
-        onClick={() => stepHandler("next")}
-        disabled={step === 6 || isLoading}
-      >
-        {step === 5 ? "Start Scrapping" : step === 6 ? "Scrapping..." : "Next"}
-      </Button>
+      {step === 5 ? (
+        <Button type={"submit"} disabled={isLoading}>
+          Start Scrapping
+        </Button>
+      ) : (
+        <Button
+          onClick={() => stepHandler("next")}
+          disabled={isLoading}
+          type="button"
+        >
+          Next
+        </Button>
+      )}
     </div>
   );
 }

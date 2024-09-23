@@ -11,22 +11,19 @@ export default function StepProvider({
 }) {
   const [step, setStep] = useState(0);
 
-  const stepHandler = useCallback(
-    function (direction: "next" | "previous") {
-      switch (direction) {
-        case "next":
-          if (step < 6) setStep(step + 1);
-          break;
+  const stepHandler = (direction: "next" | "previous") => {
+    switch (direction) {
+      case "next":
+        if (step < 6) setStep(step + 1);
+        break;
 
-        case "previous":
-          if (step > 0) setStep(step - 1);
-          break;
-      }
+      case "previous":
+        if (step > 0) setStep(step - 1);
+        break;
+    }
 
-      return;
-    },
-    [step]
-  );
+    return;
+  };
 
   return (
     <StepContext.Provider value={{ step, stepHandler }}>

@@ -1,5 +1,3 @@
-"use client";
-
 import { memo } from "react";
 
 import { DataIntervalEnum, MarketEnum } from "@/lib/enums";
