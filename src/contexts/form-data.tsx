@@ -1,16 +1,13 @@
 import { createContext } from "react";
 
-import { FormContextType } from "@/lib/types";
+import { FormDataContextType } from "@/lib/types";
 import { TestCaseFormData } from "@/lib/test-cases";
 
 const initialContext = {
-  step: 0,
-  stepHandler: () => {},
-
   formData: TestCaseFormData[0],
   formDataHandler: () => {}
 };
 
-const FormContext = createContext<FormContextType>(initialContext);
+const FormDataContext = createContext<FormDataContextType>(initialContext);
 
-export default FormContext;
+export default FormDataContext;

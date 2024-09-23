@@ -21,7 +21,7 @@ export default function Select({
   disabled?: boolean;
 }) {
   const {
-    formData: { [id as keyof DownloadHistoricalDataFormData]: value },
+    [id as keyof DownloadHistoricalDataFormData]: value,
     formDataHandler
   } = useFormData();
 

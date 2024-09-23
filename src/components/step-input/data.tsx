@@ -1,20 +1,16 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, memo } from "react";
 
 import { DataEnum, DataIntervalEnum, MarketEnum } from "@/lib/enums";
 
-import useStep from "@/hooks/use-step";
 import useFormData from "@/hooks/use-form-data";
 
 import Select from "@/components/ui/select";
 import Option from "@/components/ui/option";
 
-export default function Data() {
-  const { step } = useStep();
-  const {
-    formData: { Market, DataInterval }
-  } = useFormData();
+export default memo(function Data({ disabled = true }: { disabled: boolean }) {
+  const { Market, DataInterval } = useFormData();
 
   let content = <></>;
 
@@ -89,12 +85,9 @@ export default function Data() {
       break;
   }
 
-  if (step >= 2)
-    return (
-      <Select label="Data" id="Data" name="Data" disabled={step !== 2}>
-        {content}
-      </Select>
-    );
-
-  return null;
-}
+  return (
+    <Select label="Data" id="Data" name="Data" disabled={disabled}>
+      {content}
+    </Select>
+  );
+});

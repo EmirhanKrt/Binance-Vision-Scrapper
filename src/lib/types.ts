@@ -94,11 +94,14 @@ export type DateObjectType = {
   day: number;
 };
 
-export type FormContextType = {
-  step: number;
-  stepHandler: (direction: "next" | "previous") => void;
+export type FormDataContextType = {
   formData: DownloadHistoricalDataFormData;
   formDataHandler: (event: FormDataReducerActionType) => void;
+};
+
+export type StepContextType = {
+  step: number;
+  stepHandler: (direction: "next" | "previous") => void;
 };
 
 export type FormDataReducerActionType = {

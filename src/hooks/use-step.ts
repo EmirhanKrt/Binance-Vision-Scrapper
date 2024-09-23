@@ -1,11 +1,9 @@
 import { useContext } from "react";
 
-import FormContext from "@/contexts/form";
+import StepContext from "@/contexts/step";
 
 function useStep() {
-  const { step, stepHandler } = useContext(FormContext);
-
-  return { step, stepHandler };
+  return useContext(StepContext);
 }
 
 export default useStep;

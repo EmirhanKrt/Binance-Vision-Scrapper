@@ -1,11 +1,11 @@
 import { useContext } from "react";
 
-import FormContext from "@/contexts/form";
+import FormDataContext from "@/contexts/form-data";
 
 function useFormData() {
-  const { formData, formDataHandler } = useContext(FormContext);
+  const { formData, formDataHandler } = useContext(FormDataContext);
 
-  return { formData, formDataHandler };
+  return { ...formData, formDataHandler };
 }
 
 export default useFormData;
