@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect } from "react";
+import { memo, useEffect, useRef } from "react";
 
 import { DataEnum, KLinesIntervalEnum } from "@/lib/enums";
 
@@ -17,7 +17,8 @@ export default memo(function KLinesInterval({
   disabled: boolean;
 }) {
   const { Data, Ticker } = useFormData();
-  const { stepHandler } = useStep();
+  const { step, stepHandler } = useStep();
+  const previusStep = useRef(0);
 
   const { loading, kLinesIntervalList, kLinesIntervalListHandler } =
     useAvailableKlinesIntervalList();
@@ -38,6 +39,17 @@ export default memo(function KLinesInterval({
       controller.abort("Cleaned K Lines Interval component's useEffect");
     };
   }, [isKLineInputNeeded, Ticker]);
+
+  useEffect(() => {
+    if (previusStep.current !== undefined) {
+      if (step > previusStep.current && !isKLineInputNeeded) {
+        stepHandler("next");
+      } else if (step < previusStep.current && !isKLineInputNeeded) {
+        stepHandler("previous");
+      }
+    }
+    previusStep.current = step;
+  }, [step, isKLineInputNeeded]);
 
   if (!isKLineInputNeeded) return null;
 
