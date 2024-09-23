@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, memo } from "react";
+import { memo } from "react";
 
 import { DataEnum, DataIntervalEnum, MarketEnum } from "@/lib/enums";
 

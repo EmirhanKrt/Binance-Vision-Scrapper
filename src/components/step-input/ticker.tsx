@@ -1,18 +1,32 @@
 "use client";
 
-import { useMemo } from "react";
-
-import useAvailableTickers from "@/hooks/use-available-tickers";
+import { memo, useContext, useEffect, useMemo } from "react";
 
 import { TypographyP } from "@/components/ui/typography-p";
 import ComboBox from "@/components/ui/combo-box";
+import TickerListContext from "@/contexts/ticker-list";
 
-export default function Ticker({ disabled = true }: { disabled: boolean }) {
-  const { tickers, loading } = useAvailableTickers();
+export default memo(function Ticker({
+  disabled = true
+}: {
+  disabled: boolean;
+}) {
+  const { loading, tickerList, tickerHandler } = useContext(TickerListContext);
 
-  const cachedTickers = useMemo(() => {
-    return tickers.map((ticker) => ({ value: ticker, label: ticker }));
-  }, [tickers]);
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    tickerHandler(signal);
+
+    return () => {
+      controller.abort("Cleaned Ticker component's useEffect");
+    };
+  }, []);
+
+  const cachedTickerList = useMemo(() => {
+    return tickerList.map((ticker) => ({ value: ticker, label: ticker }));
+  }, [tickerList]);
 
   if (loading) {
     return <TypographyP>Loading available tickers...</TypographyP>;
@@ -25,7 +39,7 @@ export default function Ticker({ disabled = true }: { disabled: boolean }) {
       name="Ticker"
       disabled={disabled}
       searchable={true}
-      valueList={cachedTickers}
+      valueList={cachedTickerList}
     />
   );
-}
+});

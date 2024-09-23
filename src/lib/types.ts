@@ -104,6 +104,20 @@ export type StepContextType = {
   stepHandler: (direction: "next" | "previous") => void;
 };
 
+export type TickerListContextType = {
+  loading: boolean;
+
+  tickerList: string[];
+  tickerHandler: (signal: AbortSignal) => void;
+};
+
+export type KLinesIntervalListContextType = {
+  loading: boolean;
+
+  kLinesIntervalList: string[];
+  kLinesIntervalListHandler: (signal: AbortSignal) => void;
+};
+
 export type FormDataReducerActionType = {
   type: "SELECT_INPUT_CHANGE";
   data: {

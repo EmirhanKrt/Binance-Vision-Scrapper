@@ -33,7 +33,7 @@ export default function ComboBox({
   label,
   valueList = [],
   searchable = false,
-  disabled = false
+  disabled = true
 }: {
   id: string;
   name: string;
