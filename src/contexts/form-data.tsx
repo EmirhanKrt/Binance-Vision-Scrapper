@@ -1,10 +1,12 @@
 import { createContext } from "react";
 
-import { FormDataContextType } from "@/lib/types";
-import { TestCaseFormData } from "@/lib/test-cases";
+import {
+  DownloadHistoricalDataFormData,
+  FormDataContextType
+} from "@/lib/types";
 
 const initialContext = {
-  formData: TestCaseFormData[0],
+  formData: {} as DownloadHistoricalDataFormData,
   formDataHandler: () => {}
 };
 

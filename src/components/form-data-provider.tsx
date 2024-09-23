@@ -64,7 +64,10 @@ export default function FormDataProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [formData, dispatch] = useReducer(reducer, TestCaseFormData[0]);
+  const [formData, dispatch] = useReducer(
+    reducer,
+    {} as DownloadHistoricalDataFormData
+  );
 
   function formDataHandler(event: FormDataReducerActionType) {
     dispatch(event);

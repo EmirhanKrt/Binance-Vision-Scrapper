@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils/shadcn-ui";
@@ -45,7 +45,7 @@ export default function ComboBox({
   const [isComboboxOpen, setIsComboboxOpen] = useState<boolean>(false);
 
   const {
-    [id as keyof DownloadHistoricalDataFormData]: value,
+    [id as keyof DownloadHistoricalDataFormData]: value = "",
     formDataHandler
   } = useFormData();
 
@@ -55,7 +55,21 @@ export default function ComboBox({
     setIsComboboxOpen((o) => !o);
   };
 
-  const defaultValue = valueList.find((iValue) => iValue.value === value);
+  const currentComboBoxValue = valueList.find(
+    (iValue) => iValue.value === value
+  );
+
+  useEffect(() => {
+    if (!currentComboBoxValue && valueList.length > 0) {
+      formDataHandler({
+        type: "SELECT_INPUT_CHANGE",
+        data: {
+          field: id as keyof DownloadHistoricalDataFormData,
+          value: valueList[0].value || ""
+        }
+      });
+    }
+  }, [currentComboBoxValue, valueList]);
 
   return (
     <div className="flex flex-col gap-1">
@@ -71,7 +85,7 @@ export default function ComboBox({
             } `}
           >
             <TypographyP>
-              {defaultValue ? defaultValue.label : "Select from list..."}
+              {currentComboBoxValue ? currentComboBoxValue.label : "Select..."}
             </TypographyP>
             <ChevronsUpDown />
 
@@ -80,7 +94,7 @@ export default function ComboBox({
               type="text"
               id={id}
               name={name}
-              value={value}
+              value={value || ""}
               disabled={disabled}
               className="hidden"
             />

@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { AVAILABLE_TICKER_LIST_CHECK_URL } from "@/lib/constants";
+import { MarketEnum } from "@/lib/enums";
 import { fetchDocument } from "@/lib/utils/fetch-document";
 
 import TickerListContext from "@/contexts/ticker-list";
@@ -14,15 +15,27 @@ export default function TickerListProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { Market, DataInterval, Data } = useFormData();
+  const FormData = useFormData();
 
   const [tickerList, setTickerList] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   function filterTickerFromPrefix(content: string) {
-    return content
-      .replace(["data", Market, DataInterval, Data].join("/"), "")
-      .split("/")[1];
+    let searchValueParts = [
+      "data",
+      FormData.Market,
+      FormData.DataInterval,
+      FormData.Data
+    ];
+
+    if (
+      FormData.Market === MarketEnum.FUTURES &&
+      FormData.hasOwnProperty("FuturesType")
+    ) {
+      searchValueParts.splice(2, 0, FormData["FuturesType"]);
+    }
+
+    return content.replace(searchValueParts.join("/"), "").split("/")[1];
   }
 
   async function getAvailableTicker(
@@ -30,19 +43,27 @@ export default function TickerListProvider({
     marker: string = "",
     signal: AbortSignal
   ) {
-    let requestUrl = [
+    let requestUrlParts = [
       AVAILABLE_TICKER_LIST_CHECK_URL,
-      Market,
-      DataInterval,
-      Data
-    ].join("/");
+      FormData.Market,
+      FormData.DataInterval,
+      FormData.Data
+    ];
 
+    if (
+      FormData.Market === MarketEnum.FUTURES &&
+      FormData.hasOwnProperty("FuturesType")
+    ) {
+      requestUrlParts.splice(2, 0, FormData["FuturesType"]);
+    }
+
+    let requestUrl = requestUrlParts.join("/");
     if (marker !== "")
       requestUrl += `/&marker=${[
         "data",
-        Market,
-        DataInterval,
-        Data,
+        FormData.Market,
+        FormData.DataInterval,
+        FormData.Data,
         marker
       ].join("/")}`;
 

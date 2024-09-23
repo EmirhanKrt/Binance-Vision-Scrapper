@@ -7,33 +7,56 @@ import { fetchDocument } from "@/lib/utils/fetch-document";
 
 import useFormData from "@/hooks/use-form-data";
 import KLinesIntervalListContext from "@/contexts/k-lines-interval-list";
+import { MarketEnum } from "@/lib/enums";
 
 export default function KLinesIntrervalListProvider({
   children
 }: {
   children: React.ReactNode;
 }) {
-  const { Market, DataInterval, Data, Ticker } = useFormData();
+  const FormData = useFormData();
 
   const [kLinesIntervalList, setKLinesIntervalList] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   function filterKLinesIntervalFromPrefix(content: string) {
-    return content
-      .replace(["data", Market, DataInterval, Data, Ticker].join("/"), "")
-      .split("/")[1];
+    let searchValueParts = [
+      "data",
+      FormData.Market,
+      FormData.DataInterval,
+      FormData.Data,
+      FormData.Ticker
+    ];
+
+    if (
+      FormData.Market === MarketEnum.FUTURES &&
+      FormData.hasOwnProperty("FuturesType")
+    ) {
+      searchValueParts.splice(2, 0, FormData["FuturesType"]);
+    }
+
+    return content.replace(searchValueParts.join("/"), "").split("/")[1];
   }
 
   async function getAvailableKLinesInterval(
     signal: AbortSignal
   ): Promise<Set<string>> {
-    let requestUrl = [
+    let requestUrlParts = [
       AVAILABLE_TICKER_LIST_CHECK_URL,
-      Market,
-      DataInterval,
-      Data,
-      Ticker
-    ].join("/");
+      FormData.Market,
+      FormData.DataInterval,
+      FormData.Data,
+      FormData.Ticker
+    ];
+
+    if (
+      FormData.Market === MarketEnum.FUTURES &&
+      FormData.hasOwnProperty("FuturesType")
+    ) {
+      requestUrlParts.splice(2, 0, FormData["FuturesType"]);
+    }
+
+    let requestUrl = requestUrlParts.join("/");
 
     const data = await fetchDocument(requestUrl, signal);
     if (!data) return new Set();
