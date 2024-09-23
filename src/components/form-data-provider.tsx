@@ -15,6 +15,7 @@ function reducer(
   state: DownloadHistoricalDataFormData,
   action: FormDataReducerActionType
 ) {
+  // todo: there are select bugs
   switch (action.type) {
     case "SELECT_INPUT_CHANGE":
       if (action.data.field === "Market") {

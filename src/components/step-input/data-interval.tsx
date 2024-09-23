@@ -6,8 +6,7 @@ import { DataIntervalEnum, MarketEnum } from "@/lib/enums";
 
 import useFormData from "@/hooks/use-form-data";
 
-import Select from "@/components/ui/select";
-import Option from "@/components/ui/option";
+import ComboBox from "@/components/ui/combo-box";
 
 export default memo(function DataInterval({
   disabled = true
@@ -16,18 +15,24 @@ export default memo(function DataInterval({
 }) {
   const { Market } = useFormData();
 
+  const DataIntervalValueList = [
+    { value: DataIntervalEnum.DAILY, label: "Daily" }
+  ];
+
+  if (Market !== MarketEnum.OPTION) {
+    DataIntervalValueList.push({
+      value: DataIntervalEnum.MONTHLY,
+      label: "Monthly"
+    });
+  }
+
   return (
-    <Select
+    <ComboBox
       label="Data Interval"
       id="DataInterval"
       name="DataInterval"
       disabled={disabled}
-    >
-      <Option value={DataIntervalEnum.DAILY}>Daily</Option>
-
-      {Market !== MarketEnum.OPTION && (
-        <Option value={DataIntervalEnum.MONTHLY}>Monthly</Option>
-      )}
-    </Select>
+      valueList={DataIntervalValueList}
+    />
   );
 });

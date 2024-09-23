@@ -6,76 +6,71 @@ import { DataEnum, DataIntervalEnum, MarketEnum } from "@/lib/enums";
 
 import useFormData from "@/hooks/use-form-data";
 
-import Select from "@/components/ui/select";
-import Option from "@/components/ui/option";
+import ComboBox from "@/components/ui/combo-box";
 
 export default memo(function Data({ disabled = true }: { disabled: boolean }) {
   const { Market, DataInterval } = useFormData();
 
-  let content = <></>;
+  const DataValueList = [];
 
   switch (Market) {
     case MarketEnum.SPOT:
-      content = (
-        <Fragment>
-          <Option value={DataEnum.AGG_TRADES}>Agg Trades</Option>
-          <Option value={DataEnum.KLINES}>Klines</Option>
-          <Option value={DataEnum.TRADES}>Trades</Option>
-        </Fragment>
+      DataValueList.push(
+        ...[
+          { value: DataEnum.AGG_TRADES, label: "Agg Trades" },
+          { value: DataEnum.KLINES, label: "Klines" },
+          { value: DataEnum.TRADES, label: "Trades" }
+        ]
       );
       break;
 
     case MarketEnum.OPTION:
-      content = (
-        <Fragment>
-          <Option value={DataEnum.BVOL_INDEX}>BVOL Index</Option>
-          <Option value={DataEnum.EOH_SUMMARY}>EOH Summary</Option>
-        </Fragment>
+      DataValueList.push(
+        ...[
+          { value: DataEnum.BVOL_INDEX, label: "BVOL Index" },
+          { value: DataEnum.EOH_SUMMARY, label: "EOH Summary" }
+        ]
       );
+
       break;
 
     case MarketEnum.FUTURES:
       if (DataInterval === DataIntervalEnum.DAILY) {
-        content = (
-          <Fragment>
-            <Option value={DataEnum.AGG_TRADES}>Agg Trades</Option>
-            <Option value={DataEnum.BOOK_DEPTH}>Book Depth</Option>
-            <Option value={DataEnum.BOOK_TICKER}>Book Ticker</Option>
-            <Option value={DataEnum.INDEX_PRICE_KLINES}>
-              Index Price Klines
-            </Option>
-            <Option value={DataEnum.KLINES}>Klines</Option>
-            <Option value={DataEnum.LIQUIDATION_SNAPSHOT}>
-              Liquidation Snapshot
-            </Option>
-            <Option value={DataEnum.MARK_PRICE_KLINES}>
-              Mark Price Klines
-            </Option>
-            <Option value={DataEnum.METRICS}>Metrics</Option>
-            <Option value={DataEnum.PREMIUM_INDEX_KLINES}>
-              Premium Index Klines
-            </Option>
-            <Option value={DataEnum.TRADES}>Trades</Option>
-          </Fragment>
+        DataValueList.push(
+          ...[
+            { value: DataEnum.AGG_TRADES, label: "Agg Trades" },
+            { value: DataEnum.BOOK_DEPTH, label: "Book Depth" },
+            { value: DataEnum.BOOK_TICKER, label: "Book Ticker" },
+            { value: DataEnum.INDEX_PRICE_KLINES, label: "Index Price Klines" },
+            { value: DataEnum.KLINES, label: "Klines" },
+            {
+              value: DataEnum.LIQUIDATION_SNAPSHOT,
+              label: "Liquidation Snapshot"
+            },
+            { value: DataEnum.MARK_PRICE_KLINES, label: "Mark Price Klines" },
+            { value: DataEnum.METRICS, label: "Metrics" },
+            {
+              value: DataEnum.PREMIUM_INDEX_KLINES,
+              label: "Premium Index Klines"
+            },
+            { value: DataEnum.TRADES, label: "Trades" }
+          ]
         );
       } else if (DataInterval === DataIntervalEnum.MONTHLY) {
-        content = (
-          <Fragment>
-            <Option value={DataEnum.AGG_TRADES}>Agg Trades</Option>
-            <Option value={DataEnum.BOOK_DEPTH}>Book Depth</Option>
-            <Option value={DataEnum.FUNDING_RATE}>Funding Rate</Option>
-            <Option value={DataEnum.INDEX_PRICE_KLINES}>
-              Index Price Klines
-            </Option>
-            <Option value={DataEnum.KLINES}>Klines</Option>
-            <Option value={DataEnum.MARK_PRICE_KLINES}>
-              Mark Price Klines
-            </Option>
-            <Option value={DataEnum.PREMIUM_INDEX_KLINES}>
-              Premium Index Klines
-            </Option>
-            <Option value={DataEnum.TRADES}>Trades</Option>
-          </Fragment>
+        DataValueList.push(
+          ...[
+            { value: DataEnum.AGG_TRADES, label: "Agg Trades" },
+            { value: DataEnum.BOOK_DEPTH, label: "Book Depth" },
+            { value: DataEnum.FUNDING_RATE, label: "Funding Rate" },
+            { value: DataEnum.INDEX_PRICE_KLINES, label: "Index Price Klines" },
+            { value: DataEnum.KLINES, label: "Klines" },
+            { value: DataEnum.MARK_PRICE_KLINES, label: "Mark Price Klines" },
+            {
+              value: DataEnum.PREMIUM_INDEX_KLINES,
+              label: "Premium Index Klines"
+            },
+            { value: DataEnum.TRADES, label: "Trades" }
+          ]
         );
       }
 
@@ -86,8 +81,12 @@ export default memo(function Data({ disabled = true }: { disabled: boolean }) {
   }
 
   return (
-    <Select label="Data" id="Data" name="Data" disabled={disabled}>
-      {content}
-    </Select>
+    <ComboBox
+      label="Data"
+      id="Data"
+      name="Data"
+      disabled={disabled}
+      valueList={DataValueList}
+    />
   );
 });

@@ -6,8 +6,18 @@ import { FuturestEnum, MarketEnum } from "@/lib/enums";
 
 import useFormData from "@/hooks/use-form-data";
 
-import Select from "@/components/ui/select";
-import Option from "@/components/ui/option";
+import ComboBox from "@/components/ui/combo-box";
+
+const MarketValueList = [
+  { value: MarketEnum.SPOT, label: "Spot" },
+  { value: MarketEnum.FUTURES, label: "Futures" },
+  { value: MarketEnum.OPTION, label: "Option" }
+];
+
+const FuturesTypeValueList = [
+  { value: FuturestEnum.COIN_M, label: "Coin-M" },
+  { value: FuturestEnum.USD_M, label: "Usd-M" }
+];
 
 export default memo(function MarketType({
   disabled = true
@@ -18,22 +28,22 @@ export default memo(function MarketType({
 
   return (
     <Fragment>
-      <Select label="Market Type" id="Market" name="Market" disabled={disabled}>
-        <Option value={MarketEnum.SPOT}>Spot</Option>
-        <Option value={MarketEnum.FUTURES}>Futures</Option>
-        <Option value={MarketEnum.OPTION}>Options</Option>
-      </Select>
+      <ComboBox
+        label="Market Type"
+        id="Market"
+        name="Market"
+        disabled={disabled}
+        valueList={MarketValueList}
+      />
 
       {Market === MarketEnum.FUTURES && (
-        <Select
+        <ComboBox
           label="Futures Type"
           id="FuturesType"
           name="FuturesType"
           disabled={disabled}
-        >
-          <Option value={FuturestEnum.COIN_M}>Coin-M</Option>
-          <Option value={FuturestEnum.USD_M}>Usd-M</Option>
-        </Select>
+          valueList={FuturesTypeValueList}
+        />
       )}
     </Fragment>
   );

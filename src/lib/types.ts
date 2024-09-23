@@ -111,3 +111,8 @@ export type FormDataReducerActionType = {
     value: string;
   };
 };
+
+export type ComboBoxValueListType = {
+  value: string;
+  label: string;
+};

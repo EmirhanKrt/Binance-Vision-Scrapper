@@ -1,21 +1,31 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
-import { DataEnum, DataIntervalEnum, MarketEnum } from "@/lib/enums";
-import { AVAILABLE_TICKER_LIST_CHECK_URL } from "@/lib/constants";
+import useAvailableTickers from "@/hooks/use-available-tickers";
 
-import useFormData from "@/hooks/use-form-data";
-
-import Select from "@/components/ui/select";
-import Option from "@/components/ui/option";
+import { TypographyP } from "@/components/ui/typography-p";
+import ComboBox from "@/components/ui/combo-box";
 
 export default function Ticker({ disabled = true }: { disabled: boolean }) {
-  const { Market, DataInterval, Data } = useFormData();
+  const { tickers, loading } = useAvailableTickers();
+
+  const cachedTickers = useMemo(() => {
+    return tickers.map((ticker) => ({ value: ticker, label: ticker }));
+  }, [tickers]);
+
+  if (loading) {
+    return <TypographyP>Loading available tickers...</TypographyP>;
+  }
 
   return (
-    <Select label="Ticker" id="Ticker" name="Ticker" disabled={disabled}>
-      asd
-    </Select>
+    <ComboBox
+      label="Ticker"
+      id="Ticker"
+      name="Ticker"
+      disabled={disabled}
+      searchable={true}
+      valueList={cachedTickers}
+    />
   );
 }
