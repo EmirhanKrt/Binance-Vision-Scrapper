@@ -44,6 +44,7 @@ export default function StepperButtonGroup() {
         <Button
           onClick={() => stepHandler("next")}
           disabled={isLoading}
+          className={"disabled:cursor-not-allowed"}
           type="button"
         >
           Next

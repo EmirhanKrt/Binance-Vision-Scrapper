@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState } from "react-dom";
+import { useEffect, useReducer } from "react";
 
 import { downloadHistoricalData } from "@/actions/download-historical-data";
 
@@ -15,16 +15,58 @@ import StartDateAndEndDate from "@/components/step-input/start-date-and-end-date
 import StepperButtonGroup from "@/components/stepper-button-group";
 import { TypographyP } from "@/components/ui/typography-p";
 
+function reducer(
+  state: {
+    success: boolean;
+    errorMessage: string;
+  },
+  action: {
+    type: string;
+    payload?: {
+      success: boolean;
+      errorMessage: string;
+    };
+  }
+) {
+  switch (action.type) {
+    case "RESET":
+      return { success: false, errorMessage: "" };
+
+    case "SET":
+      return { ...state, ...action?.payload };
+
+    default:
+      return state;
+  }
+}
+
 export default function FormContainer() {
-  const [state, dispatch] = useFormState(downloadHistoricalData, {
+  const [state, dispatch] = useReducer(reducer, {
     success: false,
     errorMessage: ""
   });
 
   const { step } = useStep();
 
+  useEffect(() => {
+    if (step < 5) {
+      return dispatch({
+        type: "RESET"
+      });
+    }
+  }, [step]);
+
   return (
-    <form className="flex flex-col gap-4 flex-1" action={dispatch}>
+    <form
+      className="flex flex-col gap-4 flex-1"
+      action={async (formData) => {
+        const result = await downloadHistoricalData(formData);
+        return dispatch({
+          type: "SET",
+          payload: result
+        });
+      }}
+    >
       <MarketType disabled={step !== 0} />
       {step > 0 && <DataInterval disabled={step !== 1} />}
       {step > 1 && <Data disabled={step !== 2} />}

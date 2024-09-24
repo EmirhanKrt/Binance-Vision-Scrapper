@@ -10,10 +10,7 @@ import {
 import { extractFile, readContentOfFile } from "@/lib/utils/zip";
 import { fetchSourceFile, writeMergedFile } from "@/lib/utils/file";
 
-export async function downloadHistoricalData(
-  prevState: { success: boolean; errorMessage: string },
-  formData: FormData
-) {
+export async function downloadHistoricalData(formData: FormData) {
   try {
     const formDataConverted = Object.fromEntries(
       formData
