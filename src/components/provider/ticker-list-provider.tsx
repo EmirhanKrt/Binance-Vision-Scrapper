@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 
 import { AVAILABLE_TICKER_LIST_CHECK_URL } from "@/lib/constants";
 import { MarketEnum } from "@/lib/enums";
-import { fetchDocument } from "@/lib/utils/fetch-document";
+import { fetchDocument, generateRequestUrl } from "@/lib/utils/fetch-document";
 
 import TickerListContext from "@/contexts/ticker-list";
 
@@ -42,18 +42,15 @@ export default function TickerListProvider({
     return requestUrlParts.join("/");
   }, [FormData]);
 
-  function generateRequestUrl(marker: string = "") {
-    if (marker !== "") return requestUrl + `/&marker=${marker}`;
-
-    return requestUrl;
-  }
-
   async function getAvailableTicker(
     tickerList: string[] = [],
     marker: string = "",
     signal: AbortSignal
   ) {
-    const data = await fetchDocument(generateRequestUrl(marker), signal);
+    const data = await fetchDocument(
+      generateRequestUrl(requestUrl, marker),
+      signal
+    );
     if (!data) return tickerList;
 
     const prefix = data.querySelector("Prefix");

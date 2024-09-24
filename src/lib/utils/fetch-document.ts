@@ -15,3 +15,9 @@ export async function fetchDocument(
   const responseAsText = await response.text();
   return parseXml(responseAsText);
 }
+
+export function generateRequestUrl(requestUrl: string, marker: string = "") {
+  if (marker !== "") return requestUrl + `/&marker=${marker}`;
+
+  return requestUrl;
+}

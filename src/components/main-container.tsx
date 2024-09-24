@@ -1,10 +1,10 @@
-import FormDataProvider from "@/components/form-data-provider";
-import StepProvider from "@/components/step-provider";
+import FormDataProvider from "@/components/provider/form-data-provider";
+import StepProvider from "@/components/provider/step-provider";
 
 import FormContainer from "@/components/form-container";
-import TickerListProvider from "@/components/ticker-list-provider";
-import KLinesIntrervalListProvider from "@/components/k-lines-interval-list-provider";
-import DateRangeProvider from "@/components/date-range-provider";
+import TickerListProvider from "@/components/provider/ticker-list-provider";
+import KLinesIntrervalListProvider from "@/components/provider/k-lines-interval-list-provider";
+import DateRangeProvider from "@/components/provider/date-range-provider";
 
 export default function MainContainer() {
   return (

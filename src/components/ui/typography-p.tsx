@@ -1,3 +1,15 @@
-export function TypographyP({ children }: { children: React.ReactNode }) {
-  return <p className="text-muted-foreground text-base">{children}</p>;
+import { cn } from "@/lib/utils/shadcn-ui";
+
+export function TypographyP({
+  children,
+  className = ""
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <p className={cn("text-muted-foreground text-base", className)}>
+      {children}
+    </p>
+  );
 }

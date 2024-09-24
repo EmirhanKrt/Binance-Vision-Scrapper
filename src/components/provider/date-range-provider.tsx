@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { DataEnum, MarketEnum } from "@/lib/enums";
 import { AVAILABLE_TICKER_LIST_CHECK_URL } from "@/lib/constants";
-import { fetchDocument } from "@/lib/utils/fetch-document";
+import { fetchDocument, generateRequestUrl } from "@/lib/utils/fetch-document";
 
 import DateRangeContext from "@/contexts/date-range";
 
@@ -18,6 +18,33 @@ export default function DateRangeProvider({
   const FormData = useFormData();
 
   const [loading, setLoading] = useState<boolean>(false);
+
+  const requestUrl = useMemo(() => {
+    let requestUrlParts = [
+      AVAILABLE_TICKER_LIST_CHECK_URL,
+      FormData.Market,
+      FormData.DataInterval,
+      FormData.Data,
+      FormData.Ticker
+    ];
+
+    if (
+      FormData.Market === MarketEnum.FUTURES &&
+      FormData.hasOwnProperty("FuturesType")
+    ) {
+      requestUrlParts.splice(2, 0, FormData["FuturesType"]);
+    }
+
+    const isKLineInputNeeded =
+      FormData.Data === DataEnum.PREMIUM_INDEX_KLINES ||
+      FormData.Data === DataEnum.KLINES ||
+      FormData.Data === DataEnum.INDEX_PRICE_KLINES ||
+      FormData.Data === DataEnum.MARK_PRICE_KLINES;
+
+    if (isKLineInputNeeded) requestUrlParts.push(FormData.KLinesInterval);
+
+    return requestUrlParts.join("/");
+  }, [FormData]);
 
   function filterDateRangeFromPrefix(content: string) {
     let searchValueParts = [
@@ -62,45 +89,22 @@ export default function DateRangeProvider({
   }
 
   async function getAvailableDateRange(
-    dateRange: Set<string> = new Set(),
+    dateRange: string[] = [],
     marker: string = "",
     signal: AbortSignal
-  ): Promise<Set<string>> {
-    let requestUrlParts = [
-      AVAILABLE_TICKER_LIST_CHECK_URL,
-      FormData.Market,
-      FormData.DataInterval,
-      FormData.Data,
-      FormData.Ticker
-    ];
-
-    if (
-      FormData.Market === MarketEnum.FUTURES &&
-      FormData.hasOwnProperty("FuturesType")
-    ) {
-      requestUrlParts.splice(2, 0, FormData["FuturesType"]);
-    }
-
-    const isKLineInputNeeded =
-      FormData.Data === DataEnum.PREMIUM_INDEX_KLINES ||
-      FormData.Data === DataEnum.KLINES ||
-      FormData.Data === DataEnum.INDEX_PRICE_KLINES ||
-      FormData.Data === DataEnum.MARK_PRICE_KLINES;
-
-    if (isKLineInputNeeded) requestUrlParts.push(FormData.KLinesInterval);
-
-    let requestUrl = requestUrlParts.join("/");
-    if (marker !== "") requestUrl += `/&marker=${marker}`;
-
-    const data = await fetchDocument(requestUrl, signal);
-    if (!data) return new Set();
+  ): Promise<string[]> {
+    const data = await fetchDocument(
+      generateRequestUrl(requestUrl, marker),
+      signal
+    );
+    if (!data) return dateRange;
 
     const prefixes = Array.from(data.querySelectorAll("Contents > Key"))
       .map((prefix) => prefix.textContent)
       .filter(Boolean)
       .map((prefixText) => filterDateRangeFromPrefix(prefixText!));
 
-    dateRange = new Set([...Array.from(dateRange), ...prefixes]);
+    dateRange = [...dateRange, ...prefixes];
 
     const nextMarker = data.querySelector("NextMarker");
     if (nextMarker && nextMarker.textContent) {
@@ -111,31 +115,28 @@ export default function DateRangeProvider({
       );
     }
 
-    return new Set(prefixes);
+    return dateRange;
   }
 
   async function dateRangeHandler(signal: AbortSignal) {
     setLoading(true);
 
-    const availableKLinesInterval = await getAvailableDateRange(
-      new Set<string>(),
-      "",
-      signal
-    );
-    const dataRangeList = Array.from(availableKLinesInterval);
+    const availableKLinesInterval = await getAvailableDateRange([], "", signal);
 
     FormData.formDataHandler({
       type: "SELECT_INPUT_CHANGE",
       data: {
         field: "StartDate",
-        value: new Date(dataRangeList[0]).toString()
+        value: new Date(availableKLinesInterval[0]).toString()
       }
     });
     FormData.formDataHandler({
       type: "SELECT_INPUT_CHANGE",
       data: {
         field: "EndDate",
-        value: new Date(dataRangeList[dataRangeList.length - 1]).toString()
+        value: new Date(
+          availableKLinesInterval[availableKLinesInterval.length - 1]
+        ).toString()
       }
     });
 
