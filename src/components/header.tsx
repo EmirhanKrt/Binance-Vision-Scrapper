@@ -8,7 +8,7 @@ export default function Header() {
       <TypographyH1>Binace Vision Scrapper</TypographyH1>
       <TypographyP>
         Fetch and merge historical cryptocurrency data from Binance Exchange
-        into a CSV file with just a few clicks, using data from
+        into a CSV file with just a few clicks, using data from{" "}
         <TypographyLink href="https://data.binance.vision">
           data.binance.vision
         </TypographyLink>
