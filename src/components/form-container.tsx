@@ -76,8 +76,9 @@ export default function FormContainer() {
 
       {state.success ? (
         <TypographyP className="bg-green-600 p-4 text-black font-bold border rounded-md">
-          Extracted all files and generated merged csv file. Check your output
-          folder
+          Extracted all files and generated merged csv file. <br />
+          <br /> Check output folder under root folder of
+          Binance-Vision-Scrapper application
         </TypographyP>
       ) : state.errorMessage !== "" ? (
         <TypographyP className="bg-destructive p-4 text-destructive-foreground font-bold border rounded-md">
