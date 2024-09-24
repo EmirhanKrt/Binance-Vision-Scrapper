@@ -7,8 +7,8 @@ export default function Header() {
     <header className="flex flex-col gap-4">
       <TypographyH1>Binace Vision Scrapper</TypographyH1>
       <TypographyP>
-        With just a few clicks, fetch and merge Binance Exchange`&apos;s
-        historical data into a CSV file from{" "}
+        Fetch and merge historical cryptocurrency data from Binance Exchange
+        into a CSV file with just a few clicks, using data from
         <TypographyLink href="https://data.binance.vision">
           data.binance.vision
         </TypographyLink>
