@@ -93,3 +93,46 @@ export type DateObjectType = {
   month: number;
   day: number;
 };
+
+export type FormDataContextType = {
+  formData: DownloadHistoricalDataFormData;
+  formDataHandler: (event: FormDataReducerActionType) => void;
+};
+
+export type StepContextType = {
+  step: number;
+  stepHandler: (direction: "next" | "previous") => void;
+};
+
+export type TickerListContextType = {
+  loading: boolean;
+
+  tickerList: string[];
+  tickerHandler: (signal: AbortSignal) => void;
+};
+
+export type KLinesIntervalListContextType = {
+  loading: boolean;
+
+  kLinesIntervalList: string[];
+  kLinesIntervalListHandler: (signal: AbortSignal) => void;
+};
+
+export type DateRangeContextType = {
+  loading: boolean;
+
+  dateRangeHandler: (signal: AbortSignal) => void;
+};
+
+export type FormDataReducerActionType = {
+  type: "SELECT_INPUT_CHANGE";
+  data: {
+    field: keyof DownloadHistoricalDataFormData;
+    value: string;
+  };
+};
+
+export type ComboBoxValueListType = {
+  value: string;
+  label: string;
+};

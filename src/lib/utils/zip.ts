@@ -34,7 +34,11 @@ export function readContentOfFile(
 
     return fileContent;
   } catch (error) {
-    console.log(`Failed to read content of file ${destinationFilePath}`);
+    console.log(
+      `Failed to read content of file ${destinationFilePath}, error:${
+        (error as { message?: string }).message
+      }`
+    );
 
     return "";
   }
@@ -69,7 +73,11 @@ export function extractFile(
 
     return extractStatus;
   } catch (error) {
-    console.log(`Failed to Extract zip file to ${destinationFilePath}`);
+    console.log(
+      `Failed to Extract zip file to ${destinationFilePath}, error:${
+        (error as { message?: string }).message
+      }`
+    );
 
     return false;
   }

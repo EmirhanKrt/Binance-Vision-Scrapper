@@ -11,13 +11,16 @@ type ThemeToggleProps = {
 
 function ThemeToggle({ isActive, onClick, children }: ThemeToggleProps) {
   return (
-    <span className={isActive ? "underline" : ""} onClick={onClick}>
+    <span
+      className={`cursor-pointer${isActive ? " underline" : ""}`}
+      onClick={onClick}
+    >
       {children}
     </span>
   );
 }
 
-export function ThemeSwitcher() {
+function ThemeSwitcher() {
   const { setTheme, theme } = useTheme();
 
   const toggleTheme = (newTheme: "light" | "dark") => {
@@ -25,7 +28,7 @@ export function ThemeSwitcher() {
   };
 
   return (
-    <div>
+    <div className="flex gap-4">
       <ThemeToggle
         isActive={theme === "light"}
         onClick={() => toggleTheme("light")}
@@ -42,3 +45,5 @@ export function ThemeSwitcher() {
     </div>
   );
 }
+
+export default ThemeSwitcher;
