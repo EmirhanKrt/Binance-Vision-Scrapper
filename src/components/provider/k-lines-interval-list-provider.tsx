@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { AVAILABLE_TICKER_LIST_CHECK_URL } from "@/lib/constants";
 import { fetchDocument } from "@/lib/utils/fetch-document";
@@ -19,8 +19,27 @@ export default function KLinesIntrervalListProvider({
   const [kLinesIntervalList, setKLinesIntervalList] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const requestUrl = useMemo(() => {
+    const requestUrlParts = [
+      AVAILABLE_TICKER_LIST_CHECK_URL,
+      FormData.Market,
+      FormData.DataInterval,
+      FormData.Data,
+      FormData.Ticker
+    ];
+
+    if (
+      FormData.Market === MarketEnum.FUTURES &&
+      FormData.hasOwnProperty("FuturesType")
+    ) {
+      requestUrlParts.splice(2, 0, FormData["FuturesType"]);
+    }
+
+    return requestUrlParts.join("/");
+  }, [FormData]);
+
   function filterKLinesIntervalFromPrefix(content: string) {
-    let searchValueParts = [
+    const searchValueParts = [
       "data",
       FormData.Market,
       FormData.DataInterval,
@@ -41,23 +60,6 @@ export default function KLinesIntrervalListProvider({
   async function getAvailableKLinesInterval(
     signal: AbortSignal
   ): Promise<Set<string>> {
-    let requestUrlParts = [
-      AVAILABLE_TICKER_LIST_CHECK_URL,
-      FormData.Market,
-      FormData.DataInterval,
-      FormData.Data,
-      FormData.Ticker
-    ];
-
-    if (
-      FormData.Market === MarketEnum.FUTURES &&
-      FormData.hasOwnProperty("FuturesType")
-    ) {
-      requestUrlParts.splice(2, 0, FormData["FuturesType"]);
-    }
-
-    let requestUrl = requestUrlParts.join("/");
-
     const data = await fetchDocument(requestUrl, signal);
     if (!data) return new Set();
 

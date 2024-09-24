@@ -20,7 +20,7 @@ export default function DateRangeProvider({
   const [loading, setLoading] = useState<boolean>(false);
 
   const requestUrl = useMemo(() => {
-    let requestUrlParts = [
+    const requestUrlParts = [
       AVAILABLE_TICKER_LIST_CHECK_URL,
       FormData.Market,
       FormData.DataInterval,
@@ -47,7 +47,7 @@ export default function DateRangeProvider({
   }, [FormData]);
 
   function filterDateRangeFromPrefix(content: string) {
-    let searchValueParts = [
+    const searchValueParts = [
       "data",
       FormData.Market,
       FormData.DataInterval,

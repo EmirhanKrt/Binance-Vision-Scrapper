@@ -57,8 +57,9 @@ export async function downloadHistoricalData(formData: FormData) {
       destinationPath + "/merged.csv",
       fileContentList.filter((file) => file !== null).join("")
     );
-  } catch (error: any) {
-    return { success: false, errorMessage: (error.message as string) || "" };
+  } catch (err: unknown) {
+    const error = err as { message?: string };
+    return { success: false, errorMessage: error.message || "" };
   }
 
   return { success: true, errorMessage: "" };

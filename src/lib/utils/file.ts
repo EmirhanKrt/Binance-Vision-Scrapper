@@ -20,7 +20,11 @@ export async function fetchSourceFile(
 
     return response.arrayBuffer();
   } catch (error) {
-    console.log(`Failed to fetch ${sourceFilePath}`);
+    console.log(
+      `Failed to fetch ${sourceFilePath}, error:${
+        (error as { message?: string }).message
+      }`
+    );
 
     return null;
   }

@@ -25,7 +25,7 @@ export default function TickerListProvider({
   const [loading, setLoading] = useState<boolean>(false);
 
   const requestUrl = useMemo(() => {
-    let requestUrlParts = [
+    const requestUrlParts = [
       AVAILABLE_TICKER_LIST_CHECK_URL,
       FormData.Market,
       FormData.DataInterval,

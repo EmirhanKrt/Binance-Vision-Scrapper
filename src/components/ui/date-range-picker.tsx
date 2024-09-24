@@ -2,11 +2,7 @@
 
 import { useState } from "react";
 import { CalendarIcon } from "lucide-react";
-import {
-  ActiveModifiers,
-  DateRange,
-  SelectRangeEventHandler
-} from "react-day-picker";
+import { DateRange } from "react-day-picker";
 import { format } from "date-fns";
 
 import { DownloadHistoricalDataFormData } from "@/lib/types";
