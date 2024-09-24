@@ -6,7 +6,7 @@ The core purpose of [Binance Vision Scrapper](https://github.com/EmirhanKrt/Bina
 
 The application automatically extracts all zip files from the source and stores in the ```output``` folder under root folder.
 
-Demo: //
+[Demo](https://youtu.be/L_x2W1OmPcc)
 
 ## How To Use
 
